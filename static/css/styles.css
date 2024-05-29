@@ -1,0 +1,62 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Archivo", sans-serif;
+  background-color: rgb(25, 25, 25);
+  color: rgb(212, 212, 212);
+  /* background-color: rgb(252, 252, 248);
+  color: rgb(20, 46, 52); */
+}
+
+textarea {
+  outline: none;
+  width: 100%;
+  border: rgb(40, 40, 40) 2px solid;
+  box-shadow: white;
+  border-radius: 8px;
+  font-weight: 400;
+  font-size: 18px;
+  caret-color: #5c4cd3;
+  resize: none;
+  padding: 10px;
+}
+
+button {
+  border: none;
+  background-color: #5c4cd3;
+  padding: 8px 36px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button:hover {
+  opacity: 0.9;
+  transition-property: opacity;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+  transition-duration: 300ms;
+}
+
+button:disabled {
+  opacity: 0.9;
+  cursor: not-allowed;
+}
+
+::selection {
+  background-color: #4235a1; /* Change the background color of the selected text */
+  color: white; /* Change the color of the selected text */
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
+}

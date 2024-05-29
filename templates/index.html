@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>CFD</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,100..900;1,100..900&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/styles.css') }}"
+    />
+  </head>
+  <body style="margin: auto auto auto auto; max-width: 600px; padding: 20px">
+    <h1>ask a question</h1>
+    <form onsubmit="handleSubmit(event)">
+      <textarea
+        id="prompt-input"
+        autofocus
+        autocomplete="off"
+        style="height: 64px; margin-top: 24px"
+        caret-color="transparent"
+      ></textarea>
+      <div style="display: flex; justify-content: end">
+        <button id="submit-button" type="submit">go</button>
+      </div>
+    </form>
+    <div id="response" style="margin-top: 10px"></div>
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+  </body>
+</html>
