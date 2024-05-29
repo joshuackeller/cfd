@@ -6,25 +6,28 @@
   background-color: rgb(25, 25, 25);
   color: rgb(212, 212, 212);
   /* background-color: rgb(252, 252, 248);
-  color: rgb(20, 46, 52); */
+  color: rgb(33, 20, 52); */
 }
 
 textarea {
   outline: none;
   width: 100%;
   border: rgb(40, 40, 40) 2px solid;
+  /* border: rgb(33, 20, 52) 2px solid; */
   box-shadow: white;
   border-radius: 8px;
   font-weight: 400;
   font-size: 18px;
-  caret-color: #5c4cd3;
+  caret-color: rgb(92, 76, 211);
   resize: none;
   padding: 10px;
 }
 
 button {
   border: none;
-  background-color: #5c4cd3;
+  background-color: rgb(92, 76, 211);
+  /* color: rgb(252, 252, 248); */
+  color: rgb(212, 212, 212);
   padding: 8px 36px;
   border-radius: 5px;
   cursor: pointer;

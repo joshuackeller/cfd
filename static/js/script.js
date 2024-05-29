@@ -4,15 +4,17 @@ const handleSubmit = async (event) => {
   const question = document.getElementById("prompt-input")?.value;
   if (!question) return;
 
-  document.getElementById("response").innerHTML = Loader;
-  document.getElementById("submit-button").disabled = true;
+  const responseDiv = document.getElementById("response");
+  const submitButton = document.getElementById("submit-button");
+  responseDiv.innerHTML = Loader;
+  submitButton.disabled = true;
 
   const result = await Call.post("/api/generate", {
     question,
   });
 
-  const responseDiv = document.getElementById("response");
   responseDiv.innerHTML = result;
+  submitButton.false = false;
 };
 
 class Call {

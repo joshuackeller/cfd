@@ -1,6 +1,16 @@
 from flask import Flask, render_template, request, jsonify
+from dotenv import load_dotenv
 import requests
 import psycopg2
+from groq import Groq
+import os
+import json
+
+load_dotenv()
+
+client = Groq(
+    api_key=os.environ.get("GROQ_API_KEY"),
+)
 
 conn = psycopg2.connect(
     dbname="postgres",
@@ -80,34 +90,49 @@ def generate():
     cur.execute(query)
     rows = cur.fetchall()
 
-    print("rows", rows)
+    # Convert query results to JSON
+    json_data = []
+    column_names = [desc[0] for desc in cur.description]
+
+    for row in rows:
+        json_data.append(dict(zip(column_names, row)))
+
+    json_data = json.dumps(json_data)
+
+    print("data", json_data)
 
     cur.close()
 
-    answer = requests.post(
-        "http://localhost:11434/api/generate",
-        json={
-            "model": "llama3",
-            "stream": False,
-            "prompt": f"""
-    ### Instructions:
-    You will be given a SQL Query, data, and a question. Use the data to answer the question as concisely as possible. 
-    Don't explain the SQL query. Only use the query to understand the context of the data.
-    Assume that the data is directly related to the question. You do not need any more context.
-
-    ### Query
-    {query}
+    chat_completion = client.chat.completions.create(
+        messages=[
+            {
+                "role": "system",
+                "content": """
+            ### Instructions:
+            You will be given a SQL Query, data, and a question. Use the data to answer the question as concisely.
+            Don't explain the SQL query. Only use the query to understand the context of the data.
+            Assume that the data is directly related to the question. You do not need any more context.
+            """,
+            },
+            {
+                "role": "user",
+                "content": f"""
+                ### Query
+                {query}
     
-    ### Data
-    {rows}
+                ### Data
+                {json_data}
 
-    ### Question
-    {question}
-    """,
-        },
+                ### Question
+                {question}
+                """,
+            },
+        ],
+        model="llama3-8b-8192",
     )
 
-    return answer.json()["response"]
+    print("chat_completion", chat_completion.choices[0].message.content)
+    return chat_completion.choices[0].message.content
 
 
 if __name__ == "__main__":
