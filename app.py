@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, g
 from dotenv import load_dotenv
 import requests
 import psycopg2
@@ -12,15 +12,32 @@ client = Groq(
     api_key=os.environ.get("GROQ_API_KEY"),
 )
 
-conn = psycopg2.connect(
-    dbname="postgres",
-    user="postgres",
-    password="password",
-    host="localhost",
-    port="5432",
-)
-
 app = Flask(__name__)
+
+
+def get_db():
+    if "db" not in g:
+        g.db = psycopg2.connect(
+            dbname="postgres",
+            user="postgres",
+            password="password",
+            host="localhost",
+            port="5432",
+        )
+    return g.db
+
+
+@app.before_request
+def before_request():
+    get_db()
+
+
+@app.teardown_request
+def teardown_request(exception=None):
+    db = g.pop("db", None)
+
+    if db is not None:
+        db.close()
 
 
 @app.route("/")
@@ -86,7 +103,7 @@ def generate():
     if ticks != "```":
         raise ValueError("Invalid question")
 
-    cur = conn.cursor()
+    cur = g.db.cursor()
     cur.execute(query)
     rows = cur.fetchall()
 

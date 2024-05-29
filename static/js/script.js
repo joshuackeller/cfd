@@ -14,7 +14,7 @@ const handleSubmit = async (event) => {
   });
 
   responseDiv.innerHTML = result;
-  submitButton.false = false;
+  submitButton.disabled = false;
 };
 
 class Call {
